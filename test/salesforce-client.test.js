@@ -445,10 +445,22 @@ test('every fetch call passes an AbortSignal', async () => {
   for (const c of g.calls) assert.ok(c.signal instanceof AbortSignal, c.url);
 });
 
-test('timeoutMs really aborts a hanging fetch that honours the signal', async () => {
-  const hang = (call) => new Promise((_, reject) => {
-    call.signal.addEventListener('abort', () => reject(call.signal.reason ?? namedError('AbortError')));
+// A fetch that never answers until its signal aborts. AbortSignal.timeout() uses an unref'd timer, so a pending
+// promise alone does not keep the event loop alive: on Node 22 the process then exits before the timeout fires
+// and node:test cancels the rest of the file. The ref'd interval holds the loop open until the abort arrives
+// (a real fetch holds a socket, so production code is not affected).
+function hangUntilAborted(call) {
+  return new Promise((_, reject) => {
+    const keepAlive = setInterval(() => {}, 1000);
+    call.signal.addEventListener('abort', () => {
+      clearInterval(keepAlive);
+      reject(call.signal.reason ?? namedError('AbortError'));
+    });
   });
+}
+
+test('timeoutMs really aborts a hanging fetch that honours the signal', async () => {
+  const hang = hangUntilAborted;
   const f = createFakeFetch(() => hang);
   const started = process.hrtime.bigint();
   const err = await rejectsSf(mk(f, { timeoutMs: 30 }).fetchOpenOpportunities(OPEN), 'network');
@@ -458,9 +470,7 @@ test('timeoutMs really aborts a hanging fetch that honours the signal', async ()
 });
 
 test('testConnection returns ok:false (does not reject) on a hanging fetch', async () => {
-  const f = createFakeFetch(() => (call) => new Promise((_, reject) => {
-    call.signal.addEventListener('abort', () => reject(call.signal.reason ?? namedError('AbortError')));
-  }));
+  const f = createFakeFetch(() => hangUntilAborted);
   const r = await mk(f, { timeoutMs: 30 }).testConnection();
   assert.equal(r.ok, false);
   assert.equal(r.errorClass, 'network');
