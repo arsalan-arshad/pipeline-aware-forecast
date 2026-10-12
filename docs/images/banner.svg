@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" font-family="-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0B3D2E"/><stop offset="1" stop-color="#145C45"/></linearGradient></defs>
+  <rect width="1280" height="640" fill="url(#g)"/>
+  <g transform="translate(70,100) scale(0.12)"><rect width="1200" height="1200" rx="268" fill="#ffffff" fill-opacity="0.12"/>
+    <line x1="170" y1="930" x2="1030" y2="930" stroke="#fff" stroke-opacity="0.4" stroke-width="22" stroke-linecap="round"/>
+    <line x1="220" y1="340" x2="990" y2="700" stroke="#fff" stroke-width="58" stroke-linecap="round"/>
+    <line x1="220" y1="340" x2="780" y2="930" stroke="#9FF3C9" stroke-width="58" stroke-linecap="round"/>
+    <line x1="220" y1="340" x2="520" y2="930" stroke="#FFC857" stroke-width="58" stroke-linecap="round"/>
+    <circle cx="520" cy="930" r="52" fill="#FFC857" stroke="#0E4F3A" stroke-width="22"/><circle cx="780" cy="930" r="52" fill="#9FF3C9" stroke="#0E4F3A" stroke-width="22"/></g>
+  <text x="70" y="318" font-size="62" font-weight="800" fill="#FFFFFF">Pipeline-Aware</text>
+  <text x="70" y="388" font-size="62" font-weight="800" fill="#FFFFFF">Forecast</text>
+  <text x="70" y="450" font-size="26" fill="#BFE8D6">Know when you will run out of stock, counting</text>
+  <text x="70" y="486" font-size="26" fill="#BFE8D6">the wholesale deals in your Salesforce pipeline.</text>
+  <text x="70" y="560" font-size="20" fill="#7FC8A9">Shopify × Salesforce · read-only · open source (MIT)</text>
+  <rect x="650" y="70" width="580" height="500" rx="24" fill="#ffffff" fill-opacity="0.07"/>
+  <line x1="690" y1="450.0" x2="1200" y2="450.0" stroke="#fff" stroke-opacity="0.35" stroke-width="2"/>
+  <polyline points="710.0,150.0 1154.4,450.0" fill="none" stroke="#7DB4FF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="710.0,150.0 932.2,300.0 932.2,412.5 987.8,450.0" fill="none" stroke="#7CE3A5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="710.0,150.0 932.2,300.0 932.2,450.0" fill="none" stroke="#FFC857" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1154.4" cy="450.0" r="11" fill="#7DB4FF"/><circle cx="987.8" cy="450.0" r="11" fill="#7CE3A5"/><circle cx="932.2" cy="450.0" r="11" fill="#FFC857"/>
+  <rect x="690" y="484.0" width="26" height="7" rx="3" fill="#7DB4FF"/><text x="728" y="492.0" font-size="20" font-weight="600" fill="#7DB4FF">Retail only: runs out day 40</text>
+  <rect x="690" y="518.0" width="26" height="7" rx="3" fill="#7CE3A5"/><text x="728" y="526.0" font-size="20" font-weight="600" fill="#7CE3A5">With weighted pipeline: day 25</text>
+  <rect x="690" y="552.0" width="26" height="7" rx="3" fill="#FFC857"/><text x="728" y="560.0" font-size="20" font-weight="600" fill="#FFC857">If every deal closes: day 20</text>
+</svg>

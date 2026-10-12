@@ -1,0 +1,129 @@
+// Pipeline-Aware Forecast — storage for the Salesforce pipeline (SPEC §5).
+//
+// Data minimisation (rule 3): only aggregated per-SKU per-week quantities and counts are stored.
+// There are NO columns for account names, contacts, amounts or notes, and none may be added.
+// Merchant Salesforce credentials are stored AES-256-GCM encrypted (credentials-crypto.server.js)
+// and must be deleted on app uninstall and `shop/redact`.
+//
+// The Shopify session table is added when the Shopify app shell is scaffolded.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SalesforceConnection {
+  shop             String    @id
+  instanceUrl      String
+  authMode         String    @default("client_credentials")
+  clientIdEnc      String // encrypted payload, never plaintext
+  clientSecretEnc  String // encrypted payload, never plaintext
+  lastSyncAt       DateTime? // last successful sync
+  lastErrorClass   String? // config | auth | permission | limits | network | server | storage | unexpected_response
+  lastErrorMessage String? // human-readable, contains no secrets
+  lastErrorAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+// One row per (shop, sku, week). Replaced as a whole on every successful sync.
+model PipelineSnapshot {
+  id            String   @id @default(cuid())
+  shop          String
+  sku           String
+  weekStart     DateTime @db.Date // ISO Monday, UTC
+  weightedQty   Float
+  rawQty        Float
+  openDealCount Int
+  syncedAt      DateTime
+
+  @@unique([shop, sku, weekStart])
+  @@index([shop])
+}
+
+// Salesforce product codes that matched no Shopify SKU (data-quality panel). Never used in any number.
+model UnmatchedProduct {
+  id            String   @id @default(cuid())
+  shop          String
+  productCode   String
+  openDealCount Int
+  rawQty        Float
+  syncedAt      DateTime
+
+  @@unique([shop, productCode])
+  @@index([shop])
+}
+
+model StageProbabilityOverride {
+  id          String @id @default(cuid())
+  shop        String
+  stageName   String
+  probability Float // Salesforce scale, 0-100
+
+  @@unique([shop, stageName])
+}
+
+model PipelineSetting {
+  shop           String @id
+  haircut        Float  @default(1) // 0-1
+  shipOffsetDays Int    @default(7)
+  horizonDays    Int    @default(90)
+  leadTimeDays   Int    @default(14) // supplier lead time used for the order-by date
+}
+
+// One row per shop that has installed the app (shop domain and timestamps only).
+// Kept after uninstall (uninstalledAt set) until shop/redact, so a reinstall restores settings.
+model ShopInstall {
+  shop          String    @id
+  installedAt   DateTime  @default(now())
+  uninstalledAt DateTime?
+  lastSeenAt    DateTime?
+}
+
+// Merchant feedback submitted in the app. Free text: merchants may type personal data into it,
+// so it is deleted on shop/redact. Contact for support is the owner's public email (shown in the app).
+model Feedback {
+  id        String   @id @default(cuid())
+  shop      String
+  rating    Int? // 1-5, optional
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([shop])
+}
+
+// Prevents two syncs for the same shop running at once (a refresh click and the scheduler).
+model SyncLock {
+  shop        String   @id
+  lockedUntil DateTime
+}
+
+/// Required by @shopify/shopify-app-session-storage-prisma. Field names/types must match what that
+/// package expects exactly. The user columns (firstName, lastName, email, ...) exist only because the
+/// package requires them for online sessions; this app uses OFFLINE sessions only, so they stay empty.
+/// This is the one model exempt from the "no contact columns" rule; never add others.
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+
+  @@index([shop])
+}

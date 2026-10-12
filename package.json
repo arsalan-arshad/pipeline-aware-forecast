@@ -1,0 +1,47 @@
+{
+  "name": "pipeline-aware-forecast",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Open-source module that feeds weighted Salesforce pipeline demand into deterministic Shopify inventory forecasting.",
+  "license": "MIT",
+  "author": "Arsalan Arshad",
+  "engines": {
+    "node": ">=20.19 <22 || >=22.12"
+  },
+  "scripts": {
+    "build": "remix vite:build",
+    "dev": "shopify app dev",
+    "start": "remix-serve ./build/server/index.js",
+    "setup": "prisma generate && prisma migrate deploy",
+    "docker-start": "npm run setup && npm run start",
+    "test": "node --test",
+    "test:integration": "node --env-file=.env --test test/salesforce-client.integration.test.js",
+    "test:db": "node --test test/database.integration.test.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "@remix-run/node": "^2.15.0",
+    "@remix-run/react": "^2.15.0",
+    "@remix-run/serve": "^2.15.0",
+    "@shopify/polaris": "^13.9.0",
+    "@shopify/shopify-app-remix": "^6.0.1",
+    "@shopify/shopify-app-session-storage-prisma": "^11.0.0",
+    "isbot": "^5.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.15.0",
+    "prisma": "^6.19.3",
+    "vite": "^5.4.0"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true,
+    "esbuild@0.27.4": true,
+    "esbuild@0.17.6": true,
+    "esbuild@0.21.5": true
+  }
+}

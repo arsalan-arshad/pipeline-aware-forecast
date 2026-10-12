@@ -1,0 +1,41 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+#
+# Linked to the "Pipeline-Aware Forecast" app in the owner's Shopify Dev Dashboard (client_id is public).
+# application_url and redirect_urls below are placeholders: `shopify app dev` swaps in its tunnel URL for
+# local development, and real URLs are set when the app is hosted. Nothing is deployed or listed yet.
+
+client_id = "52046dbad7458cb15922770025fa6ca8"
+name = "Pipeline-Aware Forecast"
+application_url = "https://example.com"
+embedded = true
+
+[access_scopes]
+# Read-only. Same four scopes AI Forecast Agent uses; as a separate app these are requested by this app itself.
+scopes = "read_inventory,read_locations,read_orders,read_products"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ "https://example.com/auth/callback" ]
+
+[webhooks]
+api_version = "2026-10"
+
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/data_request"]
+  uri = "/webhooks/customers/data_request"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/redact"]
+  uri = "/webhooks/customers/redact"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["shop/redact"]
+  uri = "/webhooks/shop/redact"
+
+[build]
+automatically_update_urls_on_dev = true

@@ -1,0 +1,44 @@
+name: CI
+
+# Gates only on checks that really exist: unit tests, the real-Postgres storage tests, and the build.
+# Never uses pull_request_target; read-only token.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: paf
+          POSTGRES_PASSWORD: paf
+          POSTGRES_DB: paf_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U paf -d paf_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Throwaway CI database. The database name ends in _test and the host is localhost,
+      # which is what test/database.integration.test.js requires before it will run.
+      DATABASE_URL: postgresql://paf:paf@localhost:5432/paf_test
+      PAF_TEST_DATABASE_URL: postgresql://paf:paf@localhost:5432/paf_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx prisma migrate deploy
+      - run: npm test
+      - run: npm run build

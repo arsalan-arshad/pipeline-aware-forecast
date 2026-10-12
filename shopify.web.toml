@@ -1,0 +1,8 @@
+roles = ["backend", "frontend"]
+auth_callback_path = "/auth/callback"
+webhooks_path = "/webhooks/app/uninstalled"
+
+[commands]
+predev = "npm exec prisma generate"
+dev = "npm exec remix vite:dev"
+build = "npm exec remix vite:build"
