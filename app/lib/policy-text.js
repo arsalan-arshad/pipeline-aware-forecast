@@ -1,4 +1,4 @@
-// DRAFT written by the engineering session from the code's actual behaviour; the owner should review before publishing. Not legal advice.
+// Written by the engineering session from the code's actual behaviour. Reviewed by the owner and marked complete on 2026-10-14. Not legal advice.
 //
 // All prose for the public privacy and terms pages lives here, not in the route files, because the
 // route files are scanned for personal-data words (test/schema.test.js). Routes render these arrays generically.
