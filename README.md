@@ -146,7 +146,7 @@ The app is a React Router (server-rendered) app with a Postgres database. Any ho
 | `DATABASE_URL` | Postgres connection string |
 | `ENCRYPTION_KEY` | 64 hex characters (`openssl rand -hex 32`); encrypts stored Salesforce credentials. Losing or changing it makes stored credentials unreadable (merchants must reconnect). |
 | `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET` | From your app in the Shopify Dev Dashboard |
-| `SHOPIFY_APP_URL` | Public HTTPS address of your deployment |
+| `SHOPIFY_APP_URL` | Public HTTPS address of your deployment. Must also be set at **build** time: the CSRF origin allow-list is built from it, and without it every form post from the app is rejected |
 | `SCOPES` | `read_inventory,read_locations,read_orders,read_products` |
 | `CRON_SECRET` | 32+ random characters (e.g. `openssl rand -hex 24`); authorises the scheduled sync endpoint |
 
