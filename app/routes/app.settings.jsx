@@ -4,14 +4,14 @@
  * credentials are never echoed back or placed in any response.
  */
 import { useState } from "react";
-import { json } from "@remix-run/node";
 import {
   Form,
+  data,
   useActionData,
   useLoaderData,
   useNavigation,
   useSubmit,
-} from "@remix-run/react";
+} from "react-router";
 import {
   Banner,
   BlockStack,
@@ -55,7 +55,7 @@ export const loader = async ({ request }) => {
     }
   }
   const settings = await loadPipelineSettings({ prisma, shop: session.shop });
-  return json({ connected: Boolean(connection), instanceHost, settings });
+  return { connected: Boolean(connection), instanceHost, settings };
 };
 
 const str = (form, key) => {
@@ -79,34 +79,34 @@ export const action = async ({ request }) => {
       clientSecret: str(form, "clientSecret"),
       encryptionKey,
     });
-    return json({
+    return {
       intent,
       ok: result.ok,
       message: result.ok ? "Connection saved." : result.message,
-    });
+    };
   }
   if (intent === "test") {
     const result = await testStoredConnection({ prisma, shop, encryptionKey });
-    return json({
+    return {
       intent,
       ok: result.ok,
       message: result.message,
-    });
+    };
   }
   if (intent === "disconnect") {
     await deleteSalesforceConnection({ prisma, shop });
-    return json({ intent, ok: true, message: "Salesforce disconnected." });
+    return { intent, ok: true, message: "Salesforce disconnected." };
   }
   if (intent === "saveSettings") {
     let stageOverrides;
     try {
       stageOverrides = JSON.parse(str(form, "stageOverrides") || "[]");
     } catch {
-      return json({
+      return {
         intent,
         ok: false,
         message: "The stage table could not be read.",
-      });
+      };
     }
     const result = await savePipelineSettings({
       prisma,
@@ -117,15 +117,15 @@ export const action = async ({ request }) => {
       leadTimeDays: str(form, "leadTimeDays"),
       stageOverrides,
     });
-    return json({
+    return {
       intent,
       ok: result.ok,
       message: result.ok
         ? "Settings saved. They apply to the next refresh."
         : result.message,
-    });
+    };
   }
-  return json({ ok: false, message: "Unknown action." }, { status: 400 });
+  return data({ ok: false, message: "Unknown action." }, { status: 400 });
 };
 
 export default function Settings() {

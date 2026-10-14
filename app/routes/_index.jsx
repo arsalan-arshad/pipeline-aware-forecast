@@ -3,7 +3,7 @@
  * /app. Otherwise a static page points to the Shopify admin (no manual shop
  * domain entry, App Store requirement 2.3.1).
  */
-import { redirect } from "@remix-run/node";
+import { redirect } from "react-router";
 import { Page, Card, Text } from "@shopify/polaris";
 
 export const loader = async ({ request }) => {

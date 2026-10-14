@@ -4,12 +4,12 @@
  * authenticate.admin / authenticate.webhook / unauthenticated.admin using the
  * refresh token columns on the Session model.
  */
-import "@shopify/shopify-app-remix/adapters/node";
+import "@shopify/shopify-app-react-router/adapters/node";
 import {
   ApiVersion,
   AppDistribution,
   shopifyApp,
-} from "@shopify/shopify-app-remix/server";
+} from "@shopify/shopify-app-react-router/server";
 import { EncryptedPrismaSessionStorage } from "./session-storage.server.js";
 import prisma from "./db.server.js";
 
@@ -27,7 +27,6 @@ const shopify = shopifyApp({
   }),
   distribution: AppDistribution.AppStore,
   future: {
-    unstable_newEmbeddedAuthStrategy: true,
     expiringOfflineAccessTokens: true,
   },
 });

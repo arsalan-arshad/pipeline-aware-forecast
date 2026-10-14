@@ -1,8 +1,8 @@
-/** Browser entry: hydrates the Remix app. */
-import { RemixBrowser } from "@remix-run/react";
+/** Browser entry: hydrates the React Router app. */
 import { startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
+import { HydratedRouter } from "react-router/dom";
 
 startTransition(() => {
-  hydrateRoot(document, <RemixBrowser />);
+  hydrateRoot(document, <HydratedRouter />);
 });

@@ -2,7 +2,7 @@
  * Read-only Shopify Admin GraphQL data access for Pipeline-Aware Forecast.
  *
  * Three reads, all taking an injected `admin` (as from `authenticate.admin` in
- * @shopify/shopify-app-remix): `await admin.graphql(query, { variables })` returns a
+ * @shopify/shopify-app-react-router): `await admin.graphql(query, { variables })` returns a
  * Response-like object whose `await res.json()` gives `{ data, errors, extensions }`.
  *
  *   fetchVariantSkus(admin)        distinct SKUs of ACTIVE products' variants

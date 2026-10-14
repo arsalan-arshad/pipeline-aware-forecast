@@ -50,7 +50,7 @@ flowchart LR
         ECA["External Client App\n(read-only integration user)"]
         O --- ECA
     end
-    subgraph SH ["Pipeline-Aware Forecast (Remix + Prisma + Postgres)"]
+    subgraph SH ["Pipeline-Aware Forecast (React Router + Prisma + Postgres)"]
         P["Pipeline puller\n(scheduled + manual refresh)"]
         S["PipelineSnapshot\n(sku, week, weightedQty, rawQty)"]
         E["Deterministic engine\n(forecasting.js + pipeline math)"]
@@ -60,7 +60,7 @@ flowchart LR
     ECA -->|"SOQL over REST (read-only)"| P
 ```
 
-**Stack:** Remix (Vite), Polaris, Prisma + PostgreSQL, AES-256-GCM for stored credentials, and a small Salesforce REST client written with plain `fetch`.
+**Stack:** React Router 7 (Vite), Polaris, Prisma + PostgreSQL, AES-256-GCM for stored credentials, and a small Salesforce REST client written with plain `fetch`.
 
 Layout of the engine (pure, tested functions; the app shell, routes and storage live under `app/`):
 ```
@@ -130,7 +130,7 @@ Shopify's forecasting apps (Prediko, Sumtracker, Inventory Planner, AIventory an
 - `npm test` — offline unit tests (engine, Salesforce client with a fake `fetch`, sync, crypto, store, Shopify reads with a fake client). The live and database suites below are skipped unless configured.
 - `npm run test:integration` — live, read-only test against a Salesforce org; needs `SF_INSTANCE_URL`, `SF_CLIENT_ID`, `SF_CLIENT_SECRET` in a git-ignored `.env`.
 - `npm run test:db` — runs the storage code against a real **local** Postgres; needs `PAF_TEST_DATABASE_URL` pointing at a localhost database whose name ends in `_test` (the test refuses anything else). See the header of `test/database.integration.test.js`.
-- `npm run build` — builds the Remix app.
+- `npm run build` — builds the React Router app.
 - GitHub Actions (`.github/workflows/ci.yml`) runs the tests (including the real-Postgres suite against a service container), applies the migrations and builds on every pull request.
 
 Not verified yet: Shopify OAuth, webhook signature checks, App Bridge, and real Shopify query cost and throttling (they need a registered Shopify app and a dev store).
@@ -138,7 +138,7 @@ Not verified yet: Shopify OAuth, webhook signature checks, App Bridge, and real 
 ---
 
 ## 9. Self-hosting (production)
-The app is a Remix server with a Postgres database. Any host that runs Node and Postgres works; a single Railway service plus a Railway Postgres is enough.
+The app is a React Router (server-rendered) app with a Postgres database. Any host that runs Node and Postgres works; a single Railway service plus a Railway Postgres is enough.
 
 **Environment variables** (names only; never commit values):
 | Variable | Purpose |

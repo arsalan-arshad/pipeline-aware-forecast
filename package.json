@@ -10,9 +10,9 @@
     "node": ">=20.19 <22 || >=22.12"
   },
   "scripts": {
-    "build": "remix vite:build",
+    "build": "react-router build",
     "dev": "shopify app dev",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "react-router-serve ./build/server/index.js",
     "setup": "prisma generate && prisma migrate deploy",
     "docker-start": "npm run setup && npm run start",
     "test": "node --test",
@@ -21,18 +21,20 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
-    "@remix-run/node": "^2.15.0",
-    "@remix-run/react": "^2.15.0",
-    "@remix-run/serve": "^2.15.0",
+    "@react-router/fs-routes": "^7.18.4",
+    "@react-router/node": "^7.18.4",
+    "@react-router/serve": "^7.18.4",
     "@shopify/polaris": "^13.9.0",
-    "@shopify/shopify-app-remix": "^6.0.1",
+    "@shopify/shopify-app-react-router": "^3.0.2",
     "@shopify/shopify-app-session-storage-prisma": "^11.0.0",
     "isbot": "^5.1.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router": "^7.18.4"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.15.0",
+    "@react-router/dev": "^7.18.4",
+    "esbuild": "^0.28.2",
     "prisma": "^6.19.3",
     "vite": "^6.4.4"
   },
@@ -40,9 +42,8 @@
     "@prisma/client@6.19.3": true,
     "@prisma/engines@6.19.3": true,
     "prisma@6.19.3": true,
-    "esbuild@0.27.4": true,
-    "esbuild@0.17.6": true,
-    "esbuild@0.21.5": true
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true
   },
   "overrides": {
     "deepmerge-ts": "^8.0.2"

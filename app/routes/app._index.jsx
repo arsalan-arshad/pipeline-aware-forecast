@@ -4,14 +4,14 @@
  * Salesforce pipeline. Only status columns of the connection are selected;
  * encrypted credential columns are never read.
  */
-import { json } from "@remix-run/node";
 import {
   Form,
-  Link as RemixLink,
+  data,
+  Link as RouterLink,
   useActionData,
   useLoaderData,
   useNavigation,
-} from "@remix-run/react";
+} from "react-router";
 import {
   Banner,
   BlockStack,
@@ -125,7 +125,7 @@ export const loader = async ({ request }) => {
         : "Could not read stock and sales from Shopify. Try again shortly.";
   }
 
-  return json({
+  return {
     today,
     connected: Boolean(connection),
     lastSyncAt: connection?.lastSyncAt
@@ -141,7 +141,7 @@ export const loader = async ({ request }) => {
     rows,
     shopifyError,
     unmatched: unmatchedRows,
-  });
+  };
 };
 
 export const action = async ({ request }) => {
@@ -161,9 +161,9 @@ export const action = async ({ request }) => {
       now,
       minIntervalMs: 60000, // manual refreshes: at most one a minute per shop
     });
-    return json({ refresh });
+    return { refresh };
   }
-  return json({ error: "Unknown action." }, { status: 400 });
+  return data({ error: "Unknown action." }, { status: 400 });
 };
 
 const timeAgo = (iso, nowMs) => {
@@ -267,7 +267,7 @@ export default function Dashboard() {
           <Banner tone="warning">
             <p>
               Salesforce is not connected.{" "}
-              <RemixLink to="/app/settings">Connect Salesforce</RemixLink> to
+              <RouterLink to="/app/settings">Connect Salesforce</RouterLink> to
               include open deals in the forecast.
             </p>
           </Banner>
@@ -384,7 +384,7 @@ export default function Dashboard() {
         <Text as="p" tone="subdued">
           Questions or feedback?{" "}
           <a href={`mailto:${SUPPORT_MAILBOX}`}>{SUPPORT_MAILBOX}</a> or use the{" "}
-          <RemixLink to="/app/feedback">Feedback page</RemixLink>.
+          <RouterLink to="/app/feedback">Feedback page</RouterLink>.
         </Text>
       </BlockStack>
     </Page>
