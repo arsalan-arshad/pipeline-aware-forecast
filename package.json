@@ -34,7 +34,7 @@
   "devDependencies": {
     "@remix-run/dev": "^2.15.0",
     "prisma": "^6.19.3",
-    "vite": "^6.4.4"
+    "vite": "^7.3.5"
   },
   "allowScripts": {
     "@prisma/client@6.19.3": true,
