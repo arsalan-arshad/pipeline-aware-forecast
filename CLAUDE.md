@@ -19,7 +19,7 @@ If a `PROJECT_CONTEXT.md` build log exists locally (it is not part of the public
 
 ## Code conventions
 - ESM, plain `.js`, no dependencies for the engine. Code lives in `app/lib/pipeline/` so files drop
-  into a Remix app. Match the surrounding style: doc-comment header, `round2`.
+  into a React Router app. Match the surrounding style: doc-comment header, `round2`.
 - Tests: Node built-in runner. `npm test` (= `node --test`). Tests live in `test/`.
 - Edit only files you own when working in a team. Need another file? Ask the lead.
 

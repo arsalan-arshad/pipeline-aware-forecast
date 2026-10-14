@@ -3,7 +3,6 @@
  * required environment variables are missing is logged on the server (names only, never values).
  */
 
-import { json } from "@remix-run/node";
 import prisma from "../lib/db.server.js";
 
 const REQUIRED = [
@@ -32,5 +31,5 @@ export const loader = async () => {
   // Public endpoint: say only whether we are healthy. The names of missing settings go to the
   // server log (names, never values), not to anyone who can reach this URL.
   if (!ok) console.warn("Health check failing:", { db, missing });
-  return json({ ok }, { status: ok ? 200 : 503 });
+  return Response.json({ ok }, { status: ok ? 200 : 503 });
 };

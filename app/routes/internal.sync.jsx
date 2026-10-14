@@ -5,12 +5,11 @@
  */
 
 import { createHash, timingSafeEqual } from "node:crypto";
-import { json } from "@remix-run/node";
 import prisma from "../lib/db.server.js";
 import { runDueSyncs } from "../lib/run-due-syncs.server.js";
 import { unauthenticated } from "../lib/shopify.server.js";
 
-const notAllowed = () => json({ ok: false, message: "Method not allowed." }, { status: 405 });
+const notAllowed = () => Response.json({ ok: false, message: "Method not allowed." }, { status: 405 });
 
 const sha256 = (value) => createHash("sha256").update(value).digest();
 
@@ -28,10 +27,10 @@ export const action = async ({ request }) => {
 
   const secret = process.env.CRON_SECRET;
   if (!secret || secret.length < 32) {
-    return json({ ok: false, message: "Scheduler not configured." }, { status: 503 });
+    return Response.json({ ok: false, message: "Scheduler not configured." }, { status: 503 });
   }
   if (!secretMatches(request.headers.get("Authorization"), secret)) {
-    return json({ ok: false, message: "Unauthorized." }, { status: 401 });
+    return Response.json({ ok: false, message: "Unauthorized." }, { status: 401 });
   }
 
   const now = new Date();
@@ -43,5 +42,5 @@ export const action = async ({ request }) => {
     getAdmin: async (shop) => (await unauthenticated.admin(shop)).admin,
     encryptionKey: process.env.ENCRYPTION_KEY,
   });
-  return json({ ok: true, checked, due, synced, failed, busy });
+  return Response.json({ ok: true, checked, due, synced, failed, busy });
 };

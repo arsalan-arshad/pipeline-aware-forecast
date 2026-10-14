@@ -4,7 +4,6 @@
  * loader deliberately does NOT call authenticate.admin; auth belongs to
  * app.jsx and wrapping it here would swallow the redirect Responses it throws.
  */
-import { json } from "@remix-run/node";
 import {
   Links,
   Meta,
@@ -15,12 +14,12 @@ import {
   useLocation,
   useRouteError,
   isRouteErrorResponse,
-} from "@remix-run/react";
+} from "react-router";
 import { AppProvider } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 
 export const loader = async () => {
-  return json({ apiKey: process.env.SHOPIFY_API_KEY || "" });
+  return { apiKey: process.env.SHOPIFY_API_KEY || "" };
 };
 
 export default function App() {

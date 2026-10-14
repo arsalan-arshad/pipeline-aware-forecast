@@ -4,5 +4,5 @@ webhooks_path = "/webhooks/app/uninstalled"
 
 [commands]
 predev = "npm exec prisma generate"
-dev = "npm exec remix vite:dev"
-build = "npm exec remix vite:build"
+dev = "npm exec react-router dev"
+build = "npm exec react-router build"

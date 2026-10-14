@@ -3,8 +3,7 @@
  * stores a short message with an optional rating, keyed by shop.
  */
 import { useState } from "react";
-import { json } from "@remix-run/node";
-import { Form, useActionData, useNavigation, useSubmit } from "@remix-run/react";
+import { Form, useActionData, useNavigation, useSubmit } from "react-router";
 import {
   Banner,
   BlockStack,
@@ -33,7 +32,7 @@ const RATING_OPTIONS = [
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
-  return json({});
+  return {};
 };
 
 const str = (form, key) => {
@@ -51,10 +50,10 @@ export const action = async ({ request }) => {
     rating: str(form, "rating"),
     now: new Date(),
   });
-  return json({
+  return {
     ok: result.ok,
     message: result.ok ? "Thank you! Your message was sent." : result.message,
-  });
+  };
 };
 
 export default function Feedback() {

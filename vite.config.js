@@ -1,8 +1,5 @@
-import { vitePlugin as remix } from "@remix-run/dev";
-import { installGlobals } from "@remix-run/node";
+import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
-
-installGlobals();
 
 const host = new URL(
   process.env.SHOPIFY_APP_URL || process.env.APP_URL || "http://localhost",
@@ -34,9 +31,9 @@ export default defineConfig({
       allow: ["app", "node_modules"],
     },
   },
-  // Don't add @vitejs/plugin-react here: the Remix plugin already injects
+  // Don't add @vitejs/plugin-react here: the React Router plugin already injects
   // React Refresh, and a second copy breaks client hydration.
-  plugins: [remix()],
+  plugins: [reactRouter()],
   build: {
     assetsInlineLimit: 0,
   },

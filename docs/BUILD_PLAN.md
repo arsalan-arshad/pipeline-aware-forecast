@@ -24,7 +24,7 @@ Order matters: each milestone is useful on its own and can be stopped at.
 - [x] Encrypted credentials: AES-256-GCM helpers in `app/lib/pipeline/credentials-crypto.server.js`.
 - [x] Sync logic: `runPipelineSync` + `isSyncDue` in `app/lib/pipeline/pipeline-sync.server.js` (store, client and clock are injected). A failed sync never touches the last good snapshot and records the error.
 - [x] Prisma-backed store (`app/lib/pipeline-store.server.js`): atomic replace of a shop's snapshot rows in one transaction (chunked for large shops); a failure writes only the error fields. _(tested with a fake Prisma client; not yet run against Postgres)_
-- [x] Local Shopify app shell (Remix + Polaris): auth routes, app layout, placeholder dashboard, compliance webhooks; `npm run build` succeeds. Nothing is registered with Shopify (`shopify.app.toml` holds placeholders).
+- [x] Local Shopify app shell (React Router + Polaris): auth routes, app layout, placeholder dashboard, compliance webhooks; `npm run build` succeeds. Nothing is registered with Shopify (`shopify.app.toml` holds placeholders).
 - [x] Delete credentials on uninstall and everything on `shop/redact` (`app/lib/shop-data.server.js`, wired into the webhook routes; a test fails if a new shop-keyed model is not covered).
 - [x] Shopify reads (`app/lib/shopify-data.server.js`): variant SKUs, stock per SKU, units/day over the last 28 days (max 60 without `read_all_orders`). Queries validated against the 2026-10 schema; page sizes kept under Shopify's 1,000-point query-cost limit but **not yet run against a live store**.
 - [x] Initial Prisma migration generated (`prisma/migrations/20261012000000_init`, 6 tables; not yet applied to any database).
