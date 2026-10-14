@@ -1,8 +1,11 @@
 /**
  * Authenticated layout for all /app/* routes. The ui-nav-menu element is
- * defined by the App Bridge script loaded in root.jsx.
+ * defined by the App Bridge script loaded in root.jsx. The ErrorBoundary and
+ * headers exports let Shopify's boundary helpers forward the headers App Bridge
+ * needs to retry a request whose session token expired.
  */
-import { Outlet } from "react-router";
+import { Outlet, useRouteError } from "react-router";
+import { boundary } from "@shopify/shopify-app-react-router/server";
 import { authenticate } from "../lib/shopify.server.js";
 import prisma from "../lib/db.server.js";
 import { recordShopSeen } from "../lib/shop-registry.server.js";
@@ -27,3 +30,10 @@ export default function AppLayout() {
     </>
   );
 }
+
+// Shopify's boundary helpers must handle errors and headers for routes that authenticate.
+export function ErrorBoundary() {
+  return boundary.error(useRouteError());
+}
+
+export const headers = (headersArgs) => boundary.headers(headersArgs);

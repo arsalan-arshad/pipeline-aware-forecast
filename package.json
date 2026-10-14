@@ -7,7 +7,7 @@
   "license": "MIT",
   "author": "Arsalan Arshad",
   "engines": {
-    "node": ">=20.19 <22 || >=22.12"
+    "node": ">=22.12"
   },
   "scripts": {
     "build": "react-router build",
