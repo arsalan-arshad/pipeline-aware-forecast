@@ -23,7 +23,7 @@
     "@prisma/client": "^6.19.3",
     "@react-router/fs-routes": "^7.18.4",
     "@react-router/node": "^7.18.4",
-    "@react-router/serve": "^7.18.4",
+    "@react-router/serve": "^8.4.0",
     "@shopify/polaris": "^13.9.0",
     "@shopify/shopify-app-react-router": "^3.0.2",
     "@shopify/shopify-app-session-storage-prisma": "^11.0.0",
