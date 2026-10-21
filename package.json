@@ -20,7 +20,7 @@
     "test:db": "node --test test/database.integration.test.js"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
+    "@prisma/client": "^7.10.1",
     "@react-router/fs-routes": "^7.18.4",
     "@react-router/node": "^7.18.4",
     "@react-router/serve": "^7.18.4",
