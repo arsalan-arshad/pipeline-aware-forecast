@@ -36,7 +36,7 @@
     "@react-router/dev": "^7.18.4",
     "esbuild": "^0.28.2",
     "prisma": "^6.19.3",
-    "vite": "^6.4.4"
+    "vite": "^6.4.5"
   },
   "allowScripts": {
     "@prisma/client@6.19.3": true,
